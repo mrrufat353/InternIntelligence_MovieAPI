@@ -42,16 +42,16 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(SWAGGER_WHITELIST).permitAll()  // 🔥 Swagger girişə icazə
+                        .requestMatchers(SWAGGER_WHITELIST).permitAll()
                         .requestMatchers("/api/auth/**", "/api/movies/all", "/api/movies/search/").permitAll()
-                        .requestMatchers("/api/movies/**").hasRole("ADMIN")  // 🔥 Yalnız `ADMIN` üçün giriş icazəsi
+                        .requestMatchers("/api/movies/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint((request, response, authException) ->
                                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED))
                         .accessDeniedHandler((request, response, accessDeniedException) ->
                                 response.setStatus(HttpServletResponse.SC_FORBIDDEN)))
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);  // 🔥 JWT Filter əlavə olunur
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
